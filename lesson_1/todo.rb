@@ -75,6 +75,34 @@ class TodoList
     @todos.pop
   end
 
+  # Collection iteration
+
+  def each
+    @todos.each { |todo| yield(todo) }
+    self
+  end
+
+  def select
+    new_list = TodoList.new(title)
+    each { |todo| new_list << todo if yield(todo) }
+    new_list
+  end
+
+  def find_by_title(str)
+    each do |todo|
+      return todo if todo.title == str
+    end
+    nil
+  end
+
+  def all_done
+    select { |todo| todo.done? }
+  end
+
+  def all_not_done
+    select { |todo| !todo.done? }
+  end
+
   # Marking done/undone
 
   def mark_done_at(index)
@@ -89,10 +117,27 @@ class TodoList
     todo
   end
 
-  def done!
-    @todos.each { |todo| todo.done! }
-    self
+  def mark_done(str)
+    todo = find_by_title(str)
+    todo.done! if todo
+    todo
   end
+
+  def mark_undone(str)
+    todo = find_by_title(str)
+    todo.undone! if todo
+    todo
+  end
+
+  def mark_all_done
+    each { |todo| todo.done! }
+  end
+  alias_method :done!, :mark_all_done
+
+  def mark_all_undone
+    each { |todo| todo.undone! }
+  end
+  alias_method :undone!, :mark_all_undone
 
   # List interrogation
 
@@ -123,26 +168,6 @@ class TodoList
   def to_a
     @todos.dup
   end
-
-  # Collection iteration
-
-  def each
-    @todos.each { |todo| yield(todo) }
-    self
-  end
-
-  def select
-    new_list = TodoList.new(title)
-    each { |todo| new_list << todo if yield(todo) }
-    new_list
-  end
-
-  # find_by_title	takes a string as argument, and returns the first Todo object that matches the argument. Return nil if no todo is found.
-  # all_done	returns new TodoList object containing only the done items
-  # all_not_done	returns new TodoList object containing only the not done items
-  # mark_done	takes a string as argument, and marks the first Todo object that matches the argument as done.
-  # mark_all_done	mark every todo as done
-  # mark_all_undone	mark every todo as not done
 end
 
 todo1 = Todo.new("Buy milk")
@@ -153,3 +178,5 @@ list = TodoList.new("Today's Todos")
 list.add(todo1)
 list.add(todo2)
 list.add(todo3)
+
+puts list
