@@ -1,8 +1,18 @@
-def increment(num)
-  result = num + 1
-  yield(result) if block_given?
-  result
+def test2(block)
+  puts "hello"
+  block.call                    # calls the block that was originally passed to test()
+  puts "good-bye"
 end
 
-increment(5)
-increment(10) { |res| puts res }
+def test(&block)
+  puts "1"
+  test2(block)
+  puts "2"
+end
+
+test { puts "xyz" }
+# => 1
+# => hello
+# => xyz
+# => good-bye
+# => 2
