@@ -45,13 +45,11 @@ class CashRegisterTest < Minitest::Test
   def test_give_receipt_int
     trans = Transaction.new(15)
     assert_output(/You've paid \$15/) { @register.give_receipt(trans) }
-    # assert_output(/You've paid \$15\.00/) { @register.give_receipt(trans) }
   end
 
   def test_give_receipt_float
     trans = Transaction.new(15.00)
     assert_output(/You've paid \$15/) { @register.give_receipt(trans) }
-    # assert_output(/You've paid \$15\.00/) { @register.give_receipt(trans) }
   end
 end
 
@@ -71,7 +69,7 @@ class TransactionTest < Minitest::Test
 
   def test_prompt_for_payment_exact
     user_payment = StringIO.new("15\n")
-    assert_output(/You owe \$15/) do
+    capture_io do
       @transaction.prompt_for_payment(input: user_payment)
     end
     assert_equal 15, @transaction.amount_paid

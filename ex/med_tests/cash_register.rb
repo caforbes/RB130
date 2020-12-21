@@ -9,6 +9,7 @@ class CashRegister
 
   def change(transaction)
     transaction.amount_paid - transaction.item_cost
+    # the problem is, this doesnt subtract change from the register
   end
 
   def give_receipt(transaction)
