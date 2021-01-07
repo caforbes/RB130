@@ -3,19 +3,19 @@ create PigLatin class
 ::translate method, :string -> :new_string
   take multi-word input
   translate each word to pig latin
-    find initial consonants
-      identify all letters preceding first aeiou vowel
-      if there is a cluster of 2< consonants, check for special cases
-        initial qu, change onset to 'qu'
-        initial x or y + consonants, change cluster to ''
-      save the initial consonant/onset string
-      create new string
-        string with initial consonants deleted
-        plus initial consonants
-        plus 'ay'
+    find initial consonants*
+    create new string
+      string with initial consonants deleted
+      plus initial consonants
+      plus 'ay'
   return joined string of pig latin
 
-  be case-sensitive
+::initial_cluster
+  get all letters preceding first aeiou vowel
+  if onset ends in q, check for following 'u' and add if found
+  if there is a cluster of 2+, check for special vocalized consonants
+    initial x or y + consonants, change cluster to ''
+  save the initial consonant/onset string
 =end
 
 class PigLatin
