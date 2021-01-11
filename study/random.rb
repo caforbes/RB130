@@ -1,11 +1,9 @@
-def random_method(&block_arg)
-  puts 'do stuff'
-  run_here(block_arg)
-  puts 'do more stuff'
+def pass_nums(function)
+  function.call(1, 2, 3, 4)
 end
 
-def run_here(some_proc)
-  some_proc.call
-end
+lambda_4 = lambda { |a,b,c,d| puts "#{a} + #{b} + #{c} + #{d}" }
+lambda_1 = lambda { |a| puts "#{a} + b" }
 
-random_method { puts 1 + 1 }
+pass_nums(lambda_4) # => 1 + 2 + 3 + 4
+pass_nums(lambda_1) # ArgumentError
